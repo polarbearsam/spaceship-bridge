@@ -2,6 +2,7 @@ extends Node
 
 signal message
 
+@export var max_health = 100
 @export var health = 100
 
 # Called when the node enters the scene tree for the first time.
