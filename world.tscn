@@ -6,6 +6,12 @@
 
 [node name="World" type="Node2D"]
 
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://c7bl8fdblwd2w")
+spawn_path = NodePath("..")
+script = ExtResource("2_aqk2v")
+network_player = ExtResource("3_036b0")
+
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -26,12 +32,6 @@ text = "Start Server"
 [node name="Client" type="Button" parent="Control/VBoxContainer"]
 layout_mode = 2
 text = "Join as Client"
-
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://c7bl8fdblwd2w")
-spawn_path = NodePath("..")
-script = ExtResource("2_aqk2v")
-network_player = ExtResource("3_036b0")
 
 [connection signal="pressed" from="Control/VBoxContainer/Server" to="Control" method="_on_server_pressed"]
 [connection signal="pressed" from="Control/VBoxContainer/Client" to="Control" method="_on_client_pressed"]
