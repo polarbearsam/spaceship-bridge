@@ -2,8 +2,10 @@ extends Node
 
 signal player_connected(peer_id)
 signal player_disconnected(peer_id)
+signal server_connecting()
+signal server_disconnected()
 
-@export var ip_address: String = "localhost"
+@export var ip_address: String = "127.0.0.1"
 @export var port: int = 2010
 @export var max_clients: int = 5
 
@@ -27,14 +29,17 @@ func _player_disconnected(peer_id: int) -> void:
 	player_disconnected.emit(peer_id)
 
 func _server_connected() -> void:
+	#server_connected.emit()
 	print("Connected to server!")
 
 func _connection_failed() -> void:
 	_remove_multiplayer_peer()
+	server_disconnected.emit()
 	print("Failed to connect to server!")
 
 func _server_disconnected() -> void:
 	_remove_multiplayer_peer()
+	server_disconnected.emit()
 	print("Server disconnected!")
 
 func _remove_multiplayer_peer():
@@ -45,6 +50,7 @@ func start_server() -> void:
 	peer = ENetMultiplayerPeer.new()
 	peer.create_server(port, max_clients)
 	multiplayer.multiplayer_peer = peer
+	server_connecting.emit()
 	print("Server started on " + ip_address + ":" + str(port))
 
 func start_client() -> void:
@@ -52,6 +58,7 @@ func start_client() -> void:
 	peer = ENetMultiplayerPeer.new()
 	if peer.create_client(ip_address, port) == Error.OK:
 		multiplayer.multiplayer_peer = peer
+		server_connecting.emit()
 		print("Connecting...")
 	else:
 		print("Failed to create client!")
